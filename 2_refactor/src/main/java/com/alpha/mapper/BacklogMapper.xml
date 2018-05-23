@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alpha.dao.BacklogMapper">
+    <resultMap id="BaseResultMap" type="com.alpha.entity.Backlog">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="attachment" property="attachment" jdbcType="VARCHAR"/>
+        <result column="dueTime" property="dueTime" jdbcType="DATE"/>
+        <result column="state" property="state" jdbcType="CHAR"/>
+        <result column="userId" property="userid" jdbcType="INTEGER"/>
+        <association property="address" select="com.alpha.dao.AddressMapper.getAddressByBacklogId"
+                     column="id"></association>
+        <collection property="cooperators" column="id"
+                    select="com.alpha.dao.CooperatorMapper.getCooperatorsByBacklogId"></collection>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        DELETE FROM todolist3.address
+        WHERE backlogId = #{id};
+        DELETE FROM todolist3.cooperator
+        WHERE backlogId = #{id};
+        DELETE FROM backlog
+        WHERE id = #{id,jdbcType=INTEGER};
+    </delete>
+    <insert id="insert" parameterType="com.alpha.entity.Backlog" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO backlog (title, description,
+        attachment, dueTime, state,
+        userId)
+        VALUES (#{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+        #{attachment,jdbcType=VARCHAR}, #{dueTime,jdbcType=DATE}, #{state,jdbcType=CHAR},
+        #{userid,jdbcType=INTEGER});
+        SELECT @idd := LAST_INSERT_ID();
+        <if test="address!=null ">
+            INSERT into todolist3.address(street, number, backlogId) VALUES (#{address.street},#{address.number},@idd);
+        </if>
+        <if test="!cooperators.isEmpty()">
+            <foreach collection="cooperators" item="cooperator">
+                INSERT INTO todolist3.cooperator(name, email, backlogId) VALUES
+                (#{cooperator.name},#{cooperator.email},@idd);
+            </foreach>
+        </if>
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.alpha.entity.Backlog">
+        UPDATE backlog
+        SET title       = #{title,jdbcType=VARCHAR},
+            description = #{description,jdbcType=VARCHAR},
+            attachment  = #{attachment,jdbcType=VARCHAR},
+            dueTime     = #{dueTime,jdbcType=DATE},
+            state       = #{state,jdbcType=CHAR},
+            userId      = #{userid,jdbcType=INTEGER}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+            id,
+            title,
+            description,
+            attachment,
+            dueTime,
+            state,
+            userId
+        FROM backlog
+        WHERE id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+            id,
+            title,
+            description,
+            attachment,
+            dueTime,
+            state,
+            userId
+        FROM backlog
+    </select>
+    <select id="getAllByUserId" parameterType="integer" resultMap="BaseResultMap">
+        SELECT *
+        FROM todolist3.backlog
+        WHERE userId = #{userId}
+    </select>
+</mapper>
