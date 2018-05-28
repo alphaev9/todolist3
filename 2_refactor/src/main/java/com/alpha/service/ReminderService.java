@@ -22,7 +22,7 @@ public class ReminderService {
     @Autowired
     private ServletContext servletContext;
 
-    @Scheduled
+    @Scheduled(fixedRate = 500000)
     public void reminder() {
         Enumeration<String> attributes = servletContext.getAttributeNames();
         while (attributes.hasMoreElements()) {

@@ -16,7 +16,7 @@
     <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="formatters">
             <set>
-                <bean class="DateFormatter">
+                <bean class="com.alpha.formatter.DateFormatter">
                     <constructor-arg type="java.lang.String" value="yyyy-MM-dd"></constructor-arg>
                 </bean>
             </set>

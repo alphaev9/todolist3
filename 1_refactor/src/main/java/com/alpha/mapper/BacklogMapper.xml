@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="BacklogMapper">
-    <resultMap id="BaseResultMap" type="Backlog">
+<mapper namespace="com.alpha.dao.BacklogMapper">
+    <resultMap id="BaseResultMap" type="com.alpha.entity.Backlog">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="description" property="description" jdbcType="VARCHAR"/>
@@ -9,10 +9,10 @@
         <result column="dueTime" property="dueTime" jdbcType="DATE"/>
         <result column="state" property="state" jdbcType="CHAR"/>
         <result column="userId" property="userid" jdbcType="INTEGER"/>
-        <association property="address" select="AddressMapper.getAddressByBacklogId"
+        <association property="address" select="com.alpha.dao.AddressMapper.getAddressByBacklogId"
                      column="id"></association>
         <collection property="cooperators" column="id"
-                    select="CooperatorMapper.getCooperatorsByBacklogId"></collection>
+                    select="com.alpha.dao.CooperatorMapper.getCooperatorsByBacklogId"></collection>
     </resultMap>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         DELETE FROM todolist3.address
@@ -22,7 +22,7 @@
         DELETE FROM backlog
         WHERE id = #{id,jdbcType=INTEGER};
     </delete>
-    <insert id="insert" parameterType="Backlog" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insert" parameterType="com.alpha.entity.Backlog" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO backlog (title, description,
         attachment, dueTime, state,
         userId)
@@ -40,7 +40,7 @@
             </foreach>
         </if>
     </insert>
-    <update id="updateByPrimaryKey" parameterType="Backlog">
+    <update id="updateByPrimaryKey" parameterType="com.alpha.entity.Backlog">
         UPDATE backlog
         SET title       = #{title,jdbcType=VARCHAR},
             description = #{description,jdbcType=VARCHAR},
