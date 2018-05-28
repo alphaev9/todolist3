@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alpha.repository.rdb.singleTable.dao.BacklogMapper">
+    <resultMap id="BaseResultMap" type="com.alpha.repository.entity.Backlog">
+        <id property="id" column="id" jdbcType="INTEGER" javaType="com.alpha.repository.PersistId"></id>
+        <association property="address" select="com.alpha.repository.rdb.singleTable.dao.AddressMapper.getAddressByBacklogId"
+                     column="id"></association>
+        <collection property="cooperators" column="id"
+                    select="com.alpha.repository.rdb.singleTable.dao.CooperatorMapper.getCooperatorsByBacklogId"></collection>
+    </resultMap>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM todolist3.address
+        WHERE backlogId = #{id,jdbcType=INTEGER};
+        DELETE FROM todolist3.cooperator
+        WHERE backlogId = #{id,jdbcType=INTEGER};
+        DELETE FROM backlog
+        WHERE id = #{id};
+    </delete>
+    <update id="updateState" parameterType="backlog">
+        UPDATE backlog SET state= #{state} WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+            id,
+            title,
+            description,
+            attachment,
+            dueTime,
+            state,
+            userId
+        FROM backlog
+        WHERE id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        SELECT * FROM todolist3.backlog WHERE userId=#{userId}
+    </select>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO todolist3.backlog (title, description, attachment, dueTime, state, userId)
+        VALUES (#{backlog.title}, #{backlog.description}, #{backlog.attachment}, #{backlog.dueTime}, #{backlog.state}, #{userId});
+        SELECT @idd := LAST_INSERT_ID();
+        <if test="backlog.address!=null ">
+            INSERT into todolist3.address(street, number, backlogId) VALUES (#{backlog.address.street},#{backlog.address.number},@idd);
+        </if>
+        <if test="!backlog.cooperators.isEmpty()">
+            <foreach collection="backlog.cooperators" item="cooperator">
+                INSERT INTO todolist3.cooperator(name, email, backlogId) VALUES
+                (#{cooperator.name},#{cooperator.email},@idd);
+            </foreach>
+        </if>
+    </insert>
+
+</mapper>

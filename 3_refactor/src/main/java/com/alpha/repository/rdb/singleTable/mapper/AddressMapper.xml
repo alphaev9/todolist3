@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alpha.repository.rdb.singleTable.dao.AddressMapper">
+    <select id="getAddressByBacklogId" resultType="address" parameterType="integer">
+        SELECT *
+        FROM todolist3.address
+        WHERE backlogId = #{backlogId}
+    </select>
+</mapper>

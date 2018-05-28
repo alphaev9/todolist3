@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alpha.repository.rdb.singleTable.dao.UserMapper">
+
+    <insert id="insert" parameterType="user" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO todolist3.user (name, password) VALUES (#{name}, #{password});
+    </insert>
+
+    <resultMap id="userMap" type="user">
+        <id property="id" column="id" javaType="com.alpha.repository.PersistId" jdbcType="INTEGER"></id>
+        <collection property="backlogs" column="id"  select="com.alpha.repository.rdb.singleTable.dao.BacklogMapper.selectByUserId"></collection>
+    </resultMap>
+    <select id="selectById" resultMap="userMap">
+        SELECT *
+        FROM todolist3.user
+        WHERE id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultType="user">
+        SELECT *
+        FROM todolist3.user
+    </select>
+
+    <select id="selectByName" resultType="user">
+        SELECT *
+        FROM todolist3.user
+        WHERE name = #{name}
+    </select>
+</mapper>

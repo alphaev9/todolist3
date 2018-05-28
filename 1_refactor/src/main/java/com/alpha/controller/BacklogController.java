@@ -4,7 +4,7 @@ import com.alpha.dao.BacklogMapper;
 import com.alpha.entity.Backlog;
 import com.alpha.entity.BacklogState;
 import com.alpha.entity.Cooperator;
-import com.alpha.worker.EmailTask;
+import com.alpha.service.EmailTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

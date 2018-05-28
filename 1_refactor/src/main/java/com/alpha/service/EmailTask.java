@@ -1,4 +1,4 @@
-package com.alpha.worker;
+package com.alpha.service;
 
 import com.alpha.entity.Cooperator;
 

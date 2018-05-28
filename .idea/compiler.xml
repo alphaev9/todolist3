@@ -8,12 +8,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="1_refactor" />
         <module name="2_refactor" />
+        <module name="3_refactor" />
         <module name="test" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="1_refactor" target="1.8" />
       <module name="2_refactor" target="1.8" />
+      <module name="3_refactor" target="1.8" />
       <module name="test" target="1.8" />
       <module name="todolist3" target="1.8" />
     </bytecodeTargetLevel>

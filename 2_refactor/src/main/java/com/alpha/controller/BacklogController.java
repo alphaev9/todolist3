@@ -4,13 +4,14 @@ import com.alpha.dao.BacklogMapper;
 import com.alpha.entity.Backlog;
 import com.alpha.entity.BacklogState;
 import com.alpha.entity.Cooperator;
-import com.alpha.worker.EmailTask;
+import com.alpha.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +24,9 @@ public class BacklogController {
     private BacklogMapper backlogMapper;
     @Autowired
     private ServletContext servletContext;
+
+    @Autowired
+    private EmailService emailService;
 
     @RequestMapping(value = "memo", method = RequestMethod.POST)
     public ModelAndView memo(Backlog backlog, @RequestParam("attachmentFile") MultipartFile file, @ModelAttribute("userId") Integer userId) {
@@ -91,10 +95,13 @@ public class BacklogController {
     private void sendEmail(Backlog backlog, String subject, String content) {
         List<Cooperator> cooperators = backlog.getCooperators();
         cooperators.forEach(cooperator -> {
-            EmailTask emailTask = new EmailTask(cooperator, "smtp.163.com");
-            emailTask.setSubject(subject);
-            emailTask.setText(content);
-            new Thread(emailTask).start();
+            try {
+                emailService.sendEmail(cooperator.getEmail(),subject,content);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         });
     }
 

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/1_refactor/1_refactor.iml" filepath="$PROJECT_DIR$/1_refactor/1_refactor.iml" />
       <module fileurl="file://$PROJECT_DIR$/2_refactor/2_refactor.iml" filepath="$PROJECT_DIR$/2_refactor/2_refactor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/3_refactor/3_refactor.iml" filepath="$PROJECT_DIR$/3_refactor/3_refactor.iml" />
       <module fileurl="file://$PROJECT_DIR$/test/test.iml" filepath="$PROJECT_DIR$/test/test.iml" />
       <module fileurl="file://$PROJECT_DIR$/todolist3.iml" filepath="$PROJECT_DIR$/todolist3.iml" />
     </modules>

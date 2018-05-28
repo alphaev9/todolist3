@@ -1,24 +1,19 @@
-package com.alpha.worker;
+package com.alpha.service;
+
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
 import javax.mail.*;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
-
-public class EmailSender {
-    private String from="javaeecourse@163.com";
-    private String to;
-    private String SMTPHost;
-
-    public EmailSender(String to, String SMTPhost) {
-        this.to = to;
-        this.SMTPHost = SMTPhost;
-    }
-
-    public void sendEmail() throws MessagingException, InterruptedException {
+@Service
+public class EmailService {
+    @Async
+    public void sendEmail(String to,String subject,String content) throws MessagingException, InterruptedException {
         Properties properties = System.getProperties();
         properties.setProperty("mail.smtp.auth", "true");
         properties.setProperty("mail.transport.protocol", "smtp");
-        properties.setProperty("mail.smtp.host", SMTPHost);
+        properties.setProperty("mail.smtp.host", "smtp.163.com");
 
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override
@@ -27,14 +22,15 @@ public class EmailSender {
             }
         });
         MimeMessage message = new MimeMessage(session);
-        message.setFrom(from);
+        message.setFrom("javaeecourse@163.com");
         message.setRecipients(Message.RecipientType.TO, to);
-        message.setSubject("task completed");
-        message.setText("sir,the task is completed");
+        message.setSubject(subject);
+        message.setText(content);
         Transport transport = session.getTransport();
         transport.connect();
         transport.sendMessage(message, message.getAllRecipients());
         Thread.sleep(200000);
         transport.close();
     }
+
 }

@@ -1,43 +1,20 @@
-package com.alpha.worker;
-
-import com.alpha.entity.Cooperator;
+package com.alpha.service;
 
 import javax.mail.*;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-public class EmailTask implements Runnable {
-    private String from = "javaeecourse@163.com";
+public class EmailSender {
+    private String from="javaeecourse@163.com";
     private String to;
     private String SMTPHost;
-    private String subject;
-    private String text;
 
-    public EmailTask(Cooperator to, String SMTPHost) {
-        this.to = to.getEmail();
-        this.SMTPHost = SMTPHost;
+    public EmailSender(String to, String SMTPhost) {
+        this.to = to;
+        this.SMTPHost = SMTPhost;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    @Override
-    public void run() {
-        try {
-            sendEmail();
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void sendEmail() throws MessagingException, InterruptedException {
+    public void sendEmail() throws MessagingException, InterruptedException {
         Properties properties = System.getProperties();
         properties.setProperty("mail.smtp.auth", "true");
         properties.setProperty("mail.transport.protocol", "smtp");
@@ -52,8 +29,8 @@ public class EmailTask implements Runnable {
         MimeMessage message = new MimeMessage(session);
         message.setFrom(from);
         message.setRecipients(Message.RecipientType.TO, to);
-        message.setSubject(subject);
-        message.setText(text);
+        message.setSubject("task completed");
+        message.setText("sir,the task is completed");
         Transport transport = session.getTransport();
         transport.connect();
         transport.sendMessage(message, message.getAllRecipients());

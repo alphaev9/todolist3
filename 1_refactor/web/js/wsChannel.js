@@ -28,7 +28,7 @@
 )();
 
 function warn(backlogs) {
-    var form = document.querySelector("#current");
+    var form = document.querySelector("#Pending");
     var checkboxes = form.querySelectorAll("input[type=checkbox]");
     for (var i = 0; i < checkboxes.length; i++) {
         if (isBacklog(checkboxes[i].value, backlogs)) {

@@ -35,7 +35,7 @@
 
         <table schema="todolist3" tableName="backlog">
             <columnOverride column="dueTime" property="dueTime" javaType="java.sql.Date"></columnOverride>
-            <columnOverride column="state" property="state" javaType="com.alpha.entity.BacklogState"></columnOverride>
+            <columnOverride column="state" property="state" javaType="BacklogState"></columnOverride>
         </table>
         <table schema="todolist3" tableName="address"></table>
         <table schema="todolist3" tableName="cooperator"></table>
