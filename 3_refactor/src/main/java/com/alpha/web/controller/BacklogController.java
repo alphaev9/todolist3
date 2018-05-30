@@ -6,7 +6,6 @@ import com.alpha.repository.UserRepository;
 import com.alpha.repository.entity.Backlog;
 import com.alpha.repository.entity.BacklogState;
 import com.alpha.repository.entity.Cooperator;
-import com.alpha.repository.entity.User;
 import com.alpha.repository.mongodb.MongoID;
 import com.alpha.repository.rdb.singleTable.RdbId;
 import com.alpha.service.EmailService;
@@ -54,25 +53,26 @@ public class BacklogController {
             backlog.setAttachment(backlog.getAttachment() + "\\" + file.getOriginalFilename());
         }
         backlog.setState(BacklogState.pending);
-        userRepository.addBacklog(userId,backlog);
+        userRepository.addBacklog(userId, backlog);
         ModelAndView mv = new ModelAndView();
         return mv;
     }
 
     @RequestMapping(value = {"/removePending", "/removeFinished"})
-    public ModelAndView remove(@RequestParam("backlogId") String[] ids,@ModelAttribute("userId") PersistId userId) {
+    public ModelAndView remove(@RequestParam("backlogId") List<PersistId> ids, @ModelAttribute("userId") PersistId userId) {
         /**************
          * 如何对数组做转型
          * */
-        for (String id : ids) {
-            MongoID mongoID = new MongoID(new ObjectId(id));
-            Backlog backlog = backlogRepository.getBacklogById(mongoID);
+        for (PersistId id : ids) {
+//            RdbId rdbId = new RdbId(Integer.valueOf(id));
+//            MongoID mongoID = new MongoID(new ObjectId(id));
+            Backlog backlog = backlogRepository.getBacklogById(id);
             String attachment = backlog.getAttachment();
             if (attachment != null) {
                 String root = servletContext.getRealPath("/");
                 new File(root + "/" + attachment).delete();
             }
-            userRepository.removeBacklog(userId,mongoID);
+            userRepository.removeBacklog(userId, id);
         }
         ModelAndView mv = new ModelAndView();
         return mv;
@@ -80,11 +80,11 @@ public class BacklogController {
 
 
     @RequestMapping(value = "finish", method = RequestMethod.POST)
-    public ModelAndView finish(@RequestParam("backlogId") String[] ids) {
-        for (String id : ids) {
+    public ModelAndView finish(@RequestParam("backlogId") List<PersistId> ids) {
+        for (PersistId id : ids) {
 //            RdbId rdbId = new RdbId(Integer.valueOf(id));
-            MongoID mongoID = new MongoID(new ObjectId(id));
-            Backlog backlog = backlogRepository.getBacklogById(mongoID);
+//            MongoID mongoID = new MongoID(new ObjectId(id));
+            Backlog backlog = backlogRepository.getBacklogById(id);
             backlog.setState(BacklogState.finished);
             backlogRepository.updateBacklog(backlog);
             sendEmail(backlog, "backlog is finished!", "sir,the backlog is finished!");
@@ -93,12 +93,15 @@ public class BacklogController {
         return mv;
     }
 
+    /************************************
+     * 前端传递数组时，用list来接受，可以自动转型
+     *********************************/
     @RequestMapping(value = "redo", method = RequestMethod.POST)
-    public ModelAndView redo(@RequestParam("backlogId") String[] ids) {
-        for (String id : ids) {
+    public ModelAndView redo(@RequestParam("backlogId") List<PersistId> ids) {
+        for (PersistId id : ids) {
 //            RdbId rdbId = new RdbId(Integer.valueOf(id));
-            MongoID mongoID = new MongoID(new ObjectId(id));
-            Backlog backlog = backlogRepository.getBacklogById(mongoID);
+//            MongoID mongoID = new MongoID(new ObjectId(id));
+            Backlog backlog = backlogRepository.getBacklogById(id);
             backlog.setState(BacklogState.pending);
             backlogRepository.updateBacklog(backlog);
             sendEmail(backlog, "backlog will redo!", "sir,the backlog will redo!");

@@ -6,11 +6,13 @@ import com.alpha.repository.entity.BacklogState;
 import com.alpha.repository.rdb.singleTable.dao.BacklogMapper;
 import com.alpha.repository.entity.Backlog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-//@Repository
+@Repository
+@Profile("mybatis")
 public class BacklogRepositoryImpl implements BacklogRepository {
     @Autowired
     private BacklogMapper backlogMapper;

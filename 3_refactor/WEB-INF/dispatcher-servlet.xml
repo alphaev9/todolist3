@@ -13,17 +13,6 @@
     <mvc:resources mapping="/**" location="/"></mvc:resources>
     <task:annotation-driven></task:annotation-driven>
 
-    <!--在默认的Formatter基础上增加自己的Formatter-->
-    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
-        <property name="formatters">
-            <set>
-                <bean class="com.alpha.web.formatter.DateFormatter">
-                    <constructor-arg type="java.lang.String" value="yyyy-MM-dd"></constructor-arg>
-                </bean>
-                <bean class="com.alpha.web.formatter.RdbIdFomatter"></bean>
-            </set>
-        </property>
-    </bean>
     <!--视图解析器：根据bean名称从逻辑视图名称解析出物理视图-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/"></property>
@@ -54,5 +43,35 @@
             <bean class="com.alpha.web.interceptor.FillModelWithBacklogs"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
+
+
+    <beans profile="mybatis">
+        <!--在默认的Formatter基础上增加自己的Formatter-->
+        <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+            <property name="formatters">
+                <set>
+                    <bean class="com.alpha.web.formatter.DateFormatter">
+                        <constructor-arg type="java.lang.String" value="yyyy-MM-dd"></constructor-arg>
+                    </bean>
+                    <bean class="com.alpha.web.formatter.RdbIdFomatter"></bean>
+                </set>
+            </property>
+        </bean>
+    </beans>
+
+    <beans profile="mongodb">
+        <!--在默认的Formatter基础上增加自己的Formatter-->
+        <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+            <property name="formatters">
+                <set>
+                    <bean class="com.alpha.web.formatter.DateFormatter">
+                        <constructor-arg type="java.lang.String" value="yyyy-MM-dd"></constructor-arg>
+                    </bean>
+                    <bean class="com.alpha.web.formatter.MongoIdFomatter"></bean>
+                </set>
+            </property>
+        </bean>
+
+    </beans>
 
 </beans>

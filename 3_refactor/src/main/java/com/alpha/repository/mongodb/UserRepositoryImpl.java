@@ -9,12 +9,14 @@ import com.alpha.repository.mongodb.dao.UserDAO;
 import com.alpha.repository.mongodb.dto.UserDTO;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@Profile("mongodb")
 public class UserRepositoryImpl implements UserRepository {
     @Autowired
     private UserDAO userDAO;

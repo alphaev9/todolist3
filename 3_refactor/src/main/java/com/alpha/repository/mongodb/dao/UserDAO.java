@@ -4,9 +4,11 @@ import com.alpha.repository.mongodb.dto.UserDTO;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("mongodb")
 public class UserDAO extends MongoDAO {
     @Override
     protected String getCollectionName() {
