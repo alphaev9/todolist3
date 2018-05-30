@@ -1,6 +1,7 @@
 package com.alpha.repository;
 
 import com.alpha.repository.entity.Backlog;
+import com.alpha.repository.entity.BacklogState;
 
 import java.util.List;
 
@@ -9,7 +10,6 @@ import java.util.List;
  * */
 
 public interface BacklogRepository {
-    void updateBacklogState(Backlog backlog);
-    void removeBacklog(PersistId id);
-    Backlog getBacklogById(PersistId id);
+    void updateBacklog(Backlog backlog);
+    Backlog getBacklogById(PersistId backlogId);
 }

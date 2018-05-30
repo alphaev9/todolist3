@@ -14,5 +14,9 @@ public interface UserRepository {
 
     User getUserByPersistId(PersistId id);
 
-    void updateUserBacklogs(User user, Backlog backlog);
+    void addBacklog(PersistId userId, Backlog backlog);
+
+    void removeBacklog(PersistId userId,PersistId backlogId);
+
+
 }

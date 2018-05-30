@@ -1,27 +1,28 @@
-package com.alpha.repository.rdb.singleTable;
+package com.alpha.repository.mongodb;
 
 import com.alpha.repository.BacklogRepository;
 import com.alpha.repository.PersistId;
-import com.alpha.repository.entity.BacklogState;
-import com.alpha.repository.rdb.singleTable.dao.BacklogMapper;
 import com.alpha.repository.entity.Backlog;
+import com.alpha.repository.mongodb.dao.BacklogDAO;
+import com.alpha.repository.mongodb.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-//@Repository
+@Repository
 public class BacklogRepositoryImpl implements BacklogRepository {
     @Autowired
-    private BacklogMapper backlogMapper;
+    private BacklogDAO backlogDAO;
+    @Autowired
+    private UserDAO userDAO;
 
     @Override
     public void updateBacklog(Backlog backlog) {
-        backlogMapper.updateState(backlog);
+        backlogDAO.update(backlog.getId(),backlog,"Backlog");
     }
 
     @Override
     public Backlog getBacklogById(PersistId backlogId) {
-        return backlogMapper.selectById(backlogId.getRealId());
+        Backlog backlog = backlogDAO.getById(backlogId, Backlog.class);
+        return backlog;
     }
 }

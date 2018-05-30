@@ -1,6 +1,7 @@
 package com.alpha.repository.rdb.singleTable.dao;
 
 import com.alpha.repository.entity.Backlog;
+import com.alpha.repository.entity.BacklogState;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

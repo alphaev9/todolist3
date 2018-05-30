@@ -28,6 +28,7 @@ public class UserController {
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
     public ModelAndView register(User user) {
+        System.out.println("register..............");
         ModelAndView mv = new ModelAndView();
         List<User> users = userRepository.getAllUsers();
         boolean match = users.stream()
@@ -36,7 +37,6 @@ public class UserController {
                 );
         if (!match) {
             userRepository.addUser(user);
-//            sqlSession.commit();
             mv.addObject("display", "hide");
         } else {
             mv.addObject("display", "show");

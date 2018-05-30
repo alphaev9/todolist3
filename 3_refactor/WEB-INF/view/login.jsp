@@ -1,8 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -20,7 +17,7 @@
 </head>
 <body>
 <c:if test="${display==null}">
-<c:set var="display" value="hide" scope="request"></c:set>
+    <c:set var="display" value="hide" scope="request"></c:set>
 </c:if>
 <p class="${display}">user exist!</p>
 <form action="/login" method="post" id="sign_register">

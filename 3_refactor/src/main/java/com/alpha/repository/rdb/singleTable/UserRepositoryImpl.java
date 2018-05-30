@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-@Repository
+//@Repository
 public class UserRepositoryImpl implements UserRepository {
     @Autowired
     private UserMapper userMapper;
@@ -34,11 +34,18 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User getUserByPersistId(PersistId id) {
+
         return userMapper.selectById(id.getRealId());
     }
 
     @Override
-    public void updateUserBacklogs(User user, Backlog backlog) {
-        backlogMapper.insert(backlog, user.getId().getRealId());
+    public void addBacklog(PersistId userId, Backlog backlog) {
+        backlogMapper.insert(backlog,userId.getRealId());
     }
+
+    @Override
+    public void removeBacklog(PersistId userId, PersistId backlogId) {
+        backlogMapper.deleteById(backlogId.getRealId());
+    }
+
 }
